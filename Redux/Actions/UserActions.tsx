@@ -1,14 +1,15 @@
 import {User} from "../../Entities/User/User";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {API_KEY} from '@env';
 
 export const SIGNUP = 'SIGNUP';
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
 export const RESTORE_AUTH = 'RESTORE_AUTH';
 
-const API_KEY = 'AIzaSyCKwGvGfseYct3jVN9RfvwofQ6zfZCqer0';
-
 export const login : Function = (email: string, password: string, isSignup: boolean = false) => {
+
+    console.log(API_KEY);
 
     return async (dispatch: (arg0: { type: string; payload: User; }) => void) => {
         const action = isSignup ? 'signUp' : 'signInWithPassword'

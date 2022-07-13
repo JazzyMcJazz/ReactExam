@@ -1,16 +1,73 @@
-import {CameraRoll, Image, StyleSheet, Text, View} from "react-native";
+import {Image, StyleSheet, Text, View} from "react-native";
 import Logo from "../../Components/Logo/Logo";
 import MediumButton from "../../Components/Buttons/MediumButton";
 import {useEffect, useState} from "react";
 import {Icon} from "@rneui/themed";
 import Separator from "../../Components/Separator/Separator";
+import * as ImagePicker from 'expo-image-picker';
+import {ImagePickerOptions, MediaTypeOptions} from 'expo-image-picker';
+import {connectActionSheet, useActionSheet} from '@expo/react-native-action-sheet';
 
-export default function BeforeStartScreen() {
+export default connectActionSheet(BeforeStartScreen)
+
+function BeforeStartScreen() {
+
+    const { showActionSheetWithOptions } = useActionSheet();
 
     const [image, setImage] = useState(null);
 
-    const handleUpload = () => {
+    useEffect(() => {
+        // const uri = '../../assets/dummy-portrait.png'
+        // setImage(require(uri));
+    })
 
+    const handleUpload = async () => {
+
+        const options = ['Take photo', 'Choose photo', 'Cancel'];
+        const destructiveButtonIndex = 2;
+        const cancelButtonIndex = 2;
+
+        showActionSheetWithOptions({
+            options,
+            cancelButtonIndex,
+            destructiveButtonIndex,
+        },
+            (async buttonIndex => {
+                let imageData;
+
+                switch (buttonIndex) {
+                    case 0:
+                        imageData = await pickPhoto(0);
+                        break;
+                    case 1:
+                        imageData = await pickPhoto(1);
+                        break;
+                    default:
+                        return;
+                }
+
+                console.log(imageData);
+                if (!imageData.cancelled) {
+                    const uri : string = imageData.uri;
+                    // const req = require(uri);
+                    console.log(imageData);
+                    // setImage(require(uri))
+                }
+            }));
+    }
+
+    const pickPhoto = async (index : number) => {
+
+        const options : ImagePickerOptions = {
+            allowsEditing: true,
+            aspect: [3, 4],
+            mediaTypes: MediaTypeOptions.Images,
+        }
+
+        if (index === 0)
+            return await ImagePicker.launchCameraAsync(options);
+        else
+            return await ImagePicker.launchImageLibraryAsync(options);
     }
 
     return (
@@ -25,7 +82,7 @@ export default function BeforeStartScreen() {
                     <Separator height={10}/>
                     <MediumButton
                         title={'Upload'}
-                        onPress={() => {}}
+                        onPress={handleUpload}
                     />
                 </View>
                 <View style={styles.imageContainer}>

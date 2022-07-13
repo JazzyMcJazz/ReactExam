@@ -10,6 +10,7 @@ import LoginScreen from "./Screens/AuthStack/LoginScreen";
 import {ActivityIndicator, StatusBar, View} from "react-native";
 import {restore_auth} from "./Redux/Actions/UserActions";
 import BeforeStartScreen from "./Screens/BeforeStartStack/BeforeStartScreen";
+import {ActionSheetProvider} from "@expo/react-native-action-sheet";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -19,10 +20,12 @@ const Stack = createNativeStackNavigator();
 export default function AppContainer() {
 
   return (
-      <Provider store={stores}>
-          <StatusBar backgroundColor={'white'} barStyle={'dark-content'}/>
-          <App/>
-      </Provider>
+      <ActionSheetProvider>
+        <Provider store={stores}>
+            <StatusBar backgroundColor={'white'} barStyle={'dark-content'}/>
+            <App/>
+        </Provider>
+      </ActionSheetProvider>
   );
 }
 
@@ -40,7 +43,7 @@ function App() {
         if (user.loggedInUser.displayName)
             setHasDisplayName(true);
         else
-            setHasDisplayName(false);
+            setHasDisplayName(true);
 
         if (isSignedIn && !user.isAuthenticated) {
             setIsLoading(true);
