@@ -13,9 +13,9 @@ import StudyProgrammePicker from "../../Components/Pickers/StudyProgrammePicker"
 import {useDispatch, useSelector} from "react-redux";
 import {update_user} from "../../Redux/Actions/UserActions";
 
-export default connectActionSheet(BeforeStartScreen)
+export default connectActionSheet(EditProfile)
 
-function BeforeStartScreen() {
+function EditProfile(props: any) {
 
     // @ts-ignore
     const user = useSelector(state => state.user.loggedInUser);
@@ -23,26 +23,15 @@ function BeforeStartScreen() {
 
     const { showActionSheetWithOptions } = useActionSheet();
 
-    const [image, setImage] = useState<ImageInfo>();
-    const [name, setName] = useState('');
-    const [studyProgramme, setStudyProgramme] = useState('');
+    const [image, setImage] = useState(user.imageUrl);
+    const [name, setName] = useState(user.displayName);
+    const [studyProgramme, setStudyProgramme] = useState(user.studyProgramme);
     const [visible, setVisible] = useState(false);
-    const [disabled, setDisabled] = useState(true);
     const [loading, setLoading] = useState(false);
-
-    useEffect(() => {
-        if (!name || name === '' || !studyProgramme || studyProgramme === '') {
-            setDisabled(true);
-        } else setDisabled(false);
-    });
-
-    const toggleOverlay = () => {
-        setVisible(!visible)
-    };
 
     const handleStudyProgrammePicker = (programme : string) => {
         setStudyProgramme(programme);
-        toggleOverlay();
+        setVisible(!visible)
     }
 
     const handleUpload = async () => {
@@ -52,11 +41,11 @@ function BeforeStartScreen() {
         const cancelButtonIndex = 2;
 
         showActionSheetWithOptions({
-            options,
-            cancelButtonIndex,
-            destructiveButtonIndex,
+                options,
+                cancelButtonIndex,
+                destructiveButtonIndex,
 
-        }, (async buttonIndex => {
+            }, (async buttonIndex => {
                 let imgData;
 
                 switch (buttonIndex) {
@@ -71,8 +60,7 @@ function BeforeStartScreen() {
                 }
 
                 if (!imgData.cancelled) {
-                    // @ts-ignore
-                    setImage(imgData);
+                    setImage(imgData.uri);
                 }
             })
         );
@@ -92,21 +80,18 @@ function BeforeStartScreen() {
             return await ImagePicker.launchImageLibraryAsync(options);
     }
 
-    const handleNext = () => {
+    const handleSave = () => {
         setLoading(true);
         setTimeout(async () => {
-            await dispatch(update_user(user, name.trim(), studyProgramme, image ? image.uri : undefined));
-            setLoading(false)
+            await dispatch(update_user(user, name.trim(), studyProgramme, image ? image : undefined));
+            setLoading(false);
+            props.navigation.pop();
         }, 500);
     }
 
     return (
         <View style={styles.container}>
             <KeyboardAwareScrollView contentContainerStyle={styles.scrollView}>
-                <Logo/>
-                <View style={styles.titleContainer}>
-                    <Text style={styles.title}>Before we start...</Text>
-                </View>
                 <Separator height={20}/>
                 <View style={styles.profilePicContainer}>
                     <View style={styles.uploadContainer}>
@@ -120,7 +105,7 @@ function BeforeStartScreen() {
                     <View style={styles.imageContainer}>
                         { image ?
                             <View style={styles.imageBorder}>
-                                <Image style={styles.image} source={{uri: image.uri}}/>
+                                <Image style={styles.image} source={{uri: image}}/>
                             </View>
                             :
                             <Icon
@@ -152,7 +137,7 @@ function BeforeStartScreen() {
                 <Card containerStyle={styles.card}>
                     <View style={styles.inputContainer}>
                         <Text style={styles.inputTitle}>STUDY PROGRAMME</Text>
-                        <TouchableOpacity onPress={toggleOverlay}>
+                        <TouchableOpacity onPress={() => setVisible(!visible)}>
                             {studyProgramme
                                 ?
                                 <Text style={styles.textInput}>{studyProgramme}</Text>
@@ -163,17 +148,16 @@ function BeforeStartScreen() {
                         </TouchableOpacity>
                     </View>
                 </Card>
-                <Separator height={100}/>
+                <Separator height={20}/>
                 <LargeButton
-                    title={'Next'}
-                    disabled={disabled}
-                    onPress={handleNext}
+                    title={'Save changes'}
+                    onPress={handleSave}
                     loading={loading}
                 />
-                <Overlay overlayStyle={styles.overlay} isVisible={visible} onBackdropPress={toggleOverlay}>
+                <Overlay overlayStyle={styles.overlay} isVisible={visible} onBackdropPress={() => setVisible(!visible)}>
                     <StudyProgrammePicker
                         ok={handleStudyProgrammePicker}
-                        close={toggleOverlay}
+                        close={() => setVisible(!visible)}
                     />
                 </Overlay>
             </KeyboardAwareScrollView>
@@ -186,7 +170,7 @@ const styles = StyleSheet.create({
     container: {
         width: '100%',
         height: '100%',
-        backgroundColor: 'white',
+        backgroundColor: '#F5F5F5',
     },
 
     scrollView: {
@@ -209,7 +193,7 @@ const styles = StyleSheet.create({
     },
 
     profilePicContainer: {
-       width: '100%',
+        width: '100%',
         flexDirection: "row",
         alignItems: 'center',
         justifyContent: 'space-between'

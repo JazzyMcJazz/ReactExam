@@ -1,4 +1,4 @@
-import {Image, StyleSheet} from "react-native";
+import {Image, StyleSheet, View} from "react-native";
 
 export default function Logo() {
 
@@ -8,8 +8,8 @@ export default function Logo() {
 }
 
 const styles = StyleSheet.create({
+
     logo: {
-        resizeMode: 'contain',
-        width: '35%',
+        margin: 20
     },
 })

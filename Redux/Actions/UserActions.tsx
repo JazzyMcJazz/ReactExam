@@ -2,14 +2,9 @@ import {User} from "../../Entities/User/User";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {API_KEY} from '@env';
 
-export const SIGNUP = 'SIGNUP';
-export const LOGIN = 'LOGIN';
-export const LOGOUT = 'LOGOUT';
-export const RESTORE_AUTH = 'RESTORE_AUTH';
+export const UPDATE_USER = 'UPDATE_USER';
 
 export const login : Function = (email: string, password: string, isSignup: boolean = false) => {
-
-    console.log(API_KEY);
 
     return async (dispatch: (arg0: { type: string; payload: User; }) => void) => {
         const action = isSignup ? 'signUp' : 'signInWithPassword'
@@ -32,7 +27,7 @@ export const login : Function = (email: string, password: string, isSignup: bool
         if (response.ok) {
 
             const userData = await fetchUserData(data.idToken);
-
+            console.log(userData)
             let user = {
                 email: data.email,
                 idToken: data.idToken,
@@ -47,7 +42,7 @@ export const login : Function = (email: string, password: string, isSignup: bool
             } catch (error) {}
 
             dispatch({
-                type: isSignup ? SIGNUP : LOGIN,
+                type: UPDATE_USER,
                 payload: user
             });
         }
@@ -63,7 +58,7 @@ export const logout : Function = () => {
             await AsyncStorage.removeItem('user');
         } catch (error) {}
 
-        dispatch({type: LOGOUT, payload: {} as User});
+        dispatch({type: UPDATE_USER, payload: {} as User});
     }
 }
 
@@ -108,7 +103,41 @@ export const restore_auth : Function = () => {
             }
         } catch (error) {}
 
-        dispatch({type: RESTORE_AUTH, payload: user});
+        dispatch({type: UPDATE_USER, payload: user});
+    }
+}
+
+export const update_user : Function = (user: User, displayName: string, studyProgramme: string, imageUrl: string) => {
+    return async (dispatch: (arg0: { type: string; payload: User; }) => void) => {
+
+        const URL = `https://identitytoolkit.googleapis.com/v1/accounts:update?key=${API_KEY}`
+        const response = await fetch(URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                idToken: user.idToken,
+                displayName,
+                returnSecureToken: true,
+            })
+        })
+
+        if (response.ok) {
+            const data = await response.json();
+            user = {
+                ...user,
+                displayName: data.displayName,
+                imageUrl,
+                studyProgramme
+            } as User
+
+            await AsyncStorage.setItem('user', JSON.stringify(user));
+
+        } else {
+            user = {} as User;
+        }
+        dispatch({type: UPDATE_USER, payload: user});
     }
 }
 
@@ -122,5 +151,6 @@ async function fetchUserData(idToken : string) {
         body: JSON.stringify({idToken})
     });
 
-    return await response.json();
+    const data = await response.json();
+    return data.users[0];
 }

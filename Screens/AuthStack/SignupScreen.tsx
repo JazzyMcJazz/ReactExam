@@ -69,7 +69,7 @@ export default function SignupScreen() {
             <KeyboardAwareScrollView contentContainerStyle={styles.scrollView}>
                 <Logo/>
                 <View style={styles.titleContainer}>
-                    <Image style={styles.title} source={require('../../assets/signup-title.png')}/>
+                    <Text style={styles.title}>Sign up to get access</Text>
                 </View>
                 <Card containerStyle={styles.card}>
 
@@ -137,12 +137,12 @@ export default function SignupScreen() {
                 <View style={styles.termsContainer}>
                     <CheckBox
                         checked={TOCCheck}
-                        checkedColor={'#32305d'}
-                        uncheckedColor={'#32305d'}
+                        checkedColor={'#5050A5'}
+                        uncheckedColor={'#5050A5'}
                         onPress={() => setTOCCheck(!TOCCheck)}
                     />
-                    <Text style={{color: '#32305d'}}>I agree to the </Text>
-                    <Text style={{textDecorationLine: 'underline', color: '#32305d'}}>terms and conditions</Text>
+                    <Text style={{color: '#5050A5'}}>I agree to the </Text>
+                    <Text style={{textDecorationLine: 'underline', color: '#5050A5'}}>terms and conditions</Text>
                 </View>
                 <LargeButton
                     title={'Get acces'}
@@ -151,7 +151,7 @@ export default function SignupScreen() {
                     onPress={handleSignup}
                 />
                 <View style={styles.loginContainer}>
-                    <Text style={{color: '#32305d'}}>Already have a user? </Text>
+                    <Text style={{color: '#5050A5'}}>Already have a user? </Text>
                     <Text
                         style={styles.loginLink}
                         onPress={() => navigation.dispatch(StackActions.replace('Log In'))}>
@@ -185,8 +185,9 @@ const styles = StyleSheet.create({
     },
 
     title: {
-        resizeMode: 'contain',
-        width: '55%',
+        color: '#32305D',
+        fontFamily: 'Teko_500Medium',
+        fontSize: 26,
     },
 
     card: {
@@ -200,16 +201,16 @@ const styles = StyleSheet.create({
     inputContainer: {
         width: '100%',
         paddingLeft: 10,
-        color: '#32305d'
+        color: '#32305D'
     },
 
     inputTitle: {
-        color: '#32305d',
+        color: '#32305D',
         fontWeight: 'bold',
     },
 
     textInput: {
-        color: '#32305d'
+        color: '#32305D',
     },
 
     errorContainer: {
@@ -239,7 +240,7 @@ const styles = StyleSheet.create({
     },
 
     button: {
-        backgroundColor: '#32305d',
+        backgroundColor: '#5050A5',
         borderRadius: 8,
         justifyContent: 'flex-start',
         padding: 20,
@@ -249,11 +250,11 @@ const styles = StyleSheet.create({
     loginContainer: {
         marginTop: 30,
         flexDirection: "row",
-        color: '#32305d',
+        color: '#5050A5'
     },
 
     loginLink: {
         fontWeight: 'bold',
-        color: '#32305d'
+        color: '#5050A5'
     }
 })

@@ -12,11 +12,6 @@ export default function HomeScreen() {
 
     return (
         <View style={styles.container}>
-            <Text>Home</Text>
-            <Button
-                title={'Logout'}
-                onPress={handleLogout}
-            />
         </View>
     )
 }
@@ -25,8 +20,9 @@ const styles = StyleSheet.create({
     container: {
         height: '100%',
         width: '100%',
-        backgroundColor: 'white',
+        backgroundColor: '#F5F5F5',
         flexDirection: 'column',
-        alignItems: 'center'
+        alignItems: 'center',
+        justifyContent: 'center'
     }
 })

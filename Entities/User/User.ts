@@ -5,7 +5,8 @@ export class User {
         public idToken?: string | null,
         public refreshToken?: string | null,
         public displayName?: string | null,
-        public imageUrl?: string | null
+        public imageUrl?: string | null,
+        public studyProgramme?: string | null
     ) {
     }
 }

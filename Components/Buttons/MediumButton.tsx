@@ -1,7 +1,7 @@
 import {StyleSheet, View} from "react-native";
 import {Button} from "@rneui/themed";
 
-export default function LargeButton(props : any) {
+export default function MediumButton(props : any) {
 
     return (
         <View style={styles.buttonContainer}>
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     },
 
     button: {
-        backgroundColor: '#32305d',
+        backgroundColor: '#5050A5',
         borderRadius: 8,
         justifyContent: 'center',
         padding: 10,

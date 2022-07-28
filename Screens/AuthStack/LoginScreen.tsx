@@ -53,7 +53,7 @@ export default function LoginScreen() {
             <KeyboardAwareScrollView contentContainerStyle={styles.scrollView}>
                 <Logo/>
                 <View style={styles.titleContainer}>
-                    <Image style={styles.title} source={require('../../assets/login-title.png')}/>
+                    <Text style={styles.title}>Log in</Text>
                 </View>
                 <Card containerStyle={styles.card}>
 
@@ -103,7 +103,7 @@ export default function LoginScreen() {
 
                 />
                 <View style={styles.signupContainer}>
-                    <Text style={{color: '#32305d'}}>Don't have an account? </Text>
+                    <Text style={{color: '#5050A5'}}>Don't have an account? </Text>
                     <Text
                         style={styles.signupLink}
                         onPress={() => navigation.dispatch(StackActions.replace('Sign Up'))}>
@@ -137,8 +137,9 @@ const styles = StyleSheet.create({
     },
 
     title: {
-        resizeMode: 'contain',
-        width: '20%',
+        color: '#32305D',
+        fontFamily: 'Teko_500Medium',
+        fontSize: 26,
     },
 
     card: {
@@ -155,12 +156,12 @@ const styles = StyleSheet.create({
     },
 
     inputTitle: {
-        color: '#32305d',
+        color: '#32305D',
         fontWeight: 'bold',
     },
 
     textInput: {
-        color: '#32305d'
+        color: '#32305D',
     },
 
     errorContainer: {
@@ -184,11 +185,11 @@ const styles = StyleSheet.create({
     signupContainer: {
         marginTop: 30,
         flexDirection: "row",
-        color: '#32305d',
+        color: '#5050A5',
     },
 
     signupLink: {
         fontWeight: 'bold',
-        color: '#32305d'
+        color: '#5050A5'
     }
 });

@@ -1,5 +1,5 @@
 import {User} from "../../entities/user/User";
-import {LOGIN, LOGOUT, RESTORE_AUTH, SIGNUP} from "../Actions/UserActions";
+import {UPDATE_USER} from "../Actions/UserActions";
 
 export interface UserState {
     isAuthenticated: boolean,
@@ -24,10 +24,7 @@ export const userReducer = (
     let newState;
 
     switch (action.type) {
-        case SIGNUP:
-        case LOGIN:
-        case RESTORE_AUTH:
-        case LOGOUT:
+        case UPDATE_USER:
             user = action.payload as User;
             newState = {...state, loggedInUser: user, isAuthenticated: !!user.idToken};
             return newState;

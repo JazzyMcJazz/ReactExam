@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     },
 
     button: {
-        backgroundColor: '#32305d',
+        backgroundColor: '#5050A5',
         borderRadius: 8,
         justifyContent: 'flex-start',
         padding: 20,
